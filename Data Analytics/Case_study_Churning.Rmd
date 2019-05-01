@@ -1,0 +1,61 @@
+---
+title: "Case_Study_1740256"
+author: "Jeevan-1740256"
+date: "24 January 2019"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\section{Aim}
+Analyse the churn in Telecom's dataset
+```{r}
+setwd("C:/Users/Jeevan/Desktop/Christ University/R Studio")   #setting the directory
+datas = read.csv('bigml_59c28831336c6604c800002a.csv')    #importing the dataset
+head(datas,5)   #1st 5 rows of the dataset
+View(datas)   #viewing the whole dataset
+summary(datas)   
+names(datas)  #knowing the names of the columns in the sheet
+mean.totaldaycalls = mean(datas$total.day.calls,na.rm = TRUE)      #getting the mean of total day calls
+mean.totaldaycalls 
+plot(datas$total.day.calls,datas$total.eve.calls,main = "Total Day Calls vs Total Evening Calls",xlab = "Total Day calls",ylab = "Total Evening Calls",pch=20,data = datas)   #plotting total day calls with total evening calls
+abline(h=mean.totaldaycalls)  #adding the mean to the graph
+model1=lm(total.day.calls~total.eve.calls,data=datas)   #getting a linear model
+abline(model1,col="red")   #Fitting the linear model to the graph
+plot(model1)  
+plot(datas$total.eve.calls,datas$total.night.calls,main = "Total Evening Calls vs Total Night",xlab = "Total Evening calls",ylab = "Total Night",pch=20,col='red')
+d=density(datas$total.day.calls)  #Kernel density plot
+d
+plot(d,main="Total Day Calls")
+polygon(d,col="red",border="black")   
+boxplot(datas$total.intl.charge,main = "Total International Charge",col="blue",border="brown",horizontal = TRUE,notch = TRUE)
+datas$churn = factor(datas$churn,   #converting textual values to numerical values
+                    levels = c('TRUE','FALSE'),
+                    labels = c(1,0))
+datas$voice.mail.plan = factor(datas$voice.mail.plan,
+                              levels = c('yes','no'),
+                              labels = c(1,0))
+datas$international.plan = factor(datas$international.plan,
+                                 levels = c('yes','no'),
+                                 labels = c(1,0))
+datas$total.day.calls = ifelse(is.na(datas$total.day.calls),
+                        ave(datas$total.day.calls,FUN = function(x) mean(x,na.rm = TRUE)),
+                        datas$total.day.calls)
+datas$total.day.minutes = ifelse(is.na(datas$total.day.minutes),
+                        ave(datas$total.day.minutes,FUN = function(x) mean(x,na.rm = TRUE)),
+                        datas$total.day.minutes)
+```
+
+\section{Result}
+In this case study, the excel sheet of churning the Telecom's dataset has been imported into RStudio. 
+To have a rough overview of how the data is, the first 5 rows of the sheet has been coded. 
+In the summary of the sheet - we can see minimum value, maximum value, 1st Quartile & 3rd Quartile deviation. The mean and the median for each column are also shown in the summary. 
+The code with the names of the sheet tells us the different columns that are ther. 
+We are finding the mean of total day calls to replace all the values that are not applicable.
+We are then plotting the graph between Total Day calls & Total evening to see whether they are related.
+Using the concept of linear regression, we are fitting a linear model to the graph of total day calls. 
+A kernel density plot is shown of the total day calls which tells us that the graph is normally distributed. 
+To replace the textual data - to make TRUE = 1 & FALSE = 0, we are using the factors function and labelling it with 1 & 0. This is the case for the churn column, voice mail plan and international plan. 
+The total day calls and total day minutes might have nil values and we are replacing that with the mean of the corresponding column. 

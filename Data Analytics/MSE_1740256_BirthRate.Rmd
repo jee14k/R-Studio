@@ -1,0 +1,91 @@
+---
+title: "MSE_1740256_Healthcare"
+author: "Jeevan-1740256"
+date: "31 January 2019"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\section{AIM}
+Health care or healthcare is the maintenance or improvement of health via the prevention, diagnosis, and treatment of disease, illness, injury, and other physical and mental impairments in human beings. Health indicators are quantifiable characteristics of a population which researchers use as supporting evidence for describing the health of a population. Typically, researchers will use a survey methodology to gather information about certain people, use statistics in an attempt to generalize the information collected to the entire population, then use the statistical analysis to make a statement about the health of the population. Health indicators are required in order to measure the health status of people and communities. They are often used by governments to guide health care policy. Analyse the given data and suggest a policy for government of India.
+
+\section{Objectives}
+-To obtain and import a dataset in RStudio.
+-To find the descriptive statistics for various fields in the data obtained regarding the healthcare data to suggest a policy for the government of India.
+-To apply Linear Regression and fit the mean of the rural infant mortality rate to the graph of rural infant mortality rate and rural birth rate. 
+-To find if the Rural birth rate and the infant mortality rate have any correlation.
+-To check whether there is any significant difference in the Total Birth Rate and Total Death Rate.
+-To visualize the data using various graphs such as line charts, kernel density plots.
+
+```{r}
+setwd("C:/Users/Jeevan/Desktop/Christ University/R Studio")
+library(readr)
+BirthRate_Data <- read_csv("C:/Users/Jeevan/Desktop/Christ University/R Studio/BirthRate_Data.csv")
+View(BirthRate_Data)
+head(BirthRate_Data, n = 5)
+summary(BirthRate_Data)
+names(BirthRate_Data)
+mean.rimr = mean(BirthRate_Data$RIMR,na.rm = TRUE)
+mean.rimr
+plot(BirthRate_Data$RIMR~BirthRate_Data$RBR,
+     data = BirthRate_Data,
+     type = "p",
+     main = "Rural Infant Mortality Rate Vs Rural Birth Rate",
+     xlab = "Rural Infant Mortality Rate",
+     ylab = "Rural Birth Rate")
+abline(h=mean.rimr, col = "yellow")
+model1 = lm(BirthRate_Data$RIMR~BirthRate_Data$RBR, data = BirthRate_Data)
+abline(model1, col = "red")
+summary(model1)
+print("Correlation between Rural Birth Rate and Rural Infant Mortality Rate")
+cor.test(BirthRate_Data$RBR,BirthRate_Data$RIMR,
+         method = "pearson",
+         conf.level = 0.95)
+var(BirthRate_Data$TNGR, y = NULL)
+var(BirthRate_Data$TDR, y = NULL)
+print("T test")
+t.test(BirthRate_Data$TNGR, BirthRate_Data$TDR, var.equal = FALSE)
+chisq.test(BirthRate_Data$RNGR,BirthRate_Data$RDR)
+d = density(BirthRate_Data$UDR)
+d
+plot(d, main = "Urban Death Rate")
+polygon(d,col="red",border="black") 
+rbr = BirthRate_Data$RBR
+rdr = BirthRate_Data$RDR
+rngr = BirthRate_Data$RNGR
+rimr = BirthRate_Data$RIMR
+rbr_norm<-rnorm(200, mean = mean(rbr), sd = sd(rbr))
+rdr_norm<-rnorm(200, mean = mean(rdr),sd = sd(rdr))
+rngr_norm<-rnorm(200, mean = mean(rngr),sd = sd(rngr))
+rimr_norm<-rnorm(200, mean = mean(rimr),sd = sd(rimr))
+boxplot(rbr_norm, rdr_norm, rngr_norm, rimr_norm, main="Multiple Boxplots for Comparison",
+        names = c("Rural Birth Rate","Rural Death Rate","Rural Natural Growth Rate","Rural Infant Mortality Rate"),
+        las=2,col = c("orange","red","green","blue"),border = "brown",horizontal = TRUE,notch = TRUE)
+```
+
+\section{INTERPRETATION}
+
+DESCRIPTIVE STATISTICS
+From the descriptive statistics thus obtained for the Rural Birth Rate, Urban Birth Rate, Total Birth Rate, Rural Death Rate, Urban Death Rate, Total Death Rate, Rural Natural Growth Rate, Urban Natural Growth Rate, Total Natural Growth Rate, Rural Infant Mortality Rate, Urban Infant Mortality Rate and the Total Infant Mortality Rate we see that the mean of Rural Infant Mortality Rate is the maximum. 
+
+CORRELATION
+Using the method Karl Pearson's Product Moment Correlation, we see that the p-value 1.271e-14 which is less than 0.05 and therefore there is a strong correlation between the rural birth rate and the rural infant mortality rate. 
+
+T-TEST
+H0: There is no significant difference between the means of total natural growth rate and total death rate.
+H1: There is a significant difference between the means of total natural growth rate and total death rate..
+
+From the results so obtained, we see that the p-value < 2.2e-16 which is less than the level of significance i.e. 0.05 due to which we reject the null hypothesis. Hence, we accept the alternative hypothesis that there is a significant difference between the means of the growth rates and the death rates. 
+
+CHI-SQUARE TESTS
+H0: The means of the total natural growth Rate and and total death rate are independent of each other.
+H1: The means of the total natural growth Rate and and total death rate are not independent of each other.
+From the result obtained, we see that the p-value = 0.4176 which is greater than the level of significance = 0.05 hence we accept the null hypothesis that they are independent.
+
+VISUALISATION USING GRAPHS
+A linear regression model has been fitted to the graph between the rural infant mortality rate and rural birth rate. 
+A kernel density plot of the urban death rate has been plotted which tells us that it is normally distributed. 
+Multiple Boxplots have been used to compare all the rural factors. 

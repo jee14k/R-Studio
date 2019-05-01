@@ -1,0 +1,91 @@
+---
+title: "Perfomance Analysis of students using R"
+author: "Jeevan-1740256"
+date: "20 December 2018"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\section{Aim}
+The performance of students during exams are influenced by many factors. Read the data set and try to get as many insights you can and hence suggest how the various factors influence the marks of different subjects.
+```{r}
+library(readxl)
+first<- read_excel("C:/Users/Jeevan/Desktop/Christ University/R Studio/Stud_Perf.xlsx")
+first
+attach(first)
+head(first)
+plot(`reading score`,`math score`,main = "Reading score vs Math Score",xlab = "Reading Score",ylab = "Math Score",pch=20)
+plot(`reading score`,`writing score`,main = "Writing score vs Math Score",xlab = "Writing Score",ylab = "Math Score",pch=20,col="red")
+plot(`reading score`,`writing score`,main = "Writing score vs Reading Score",xlab = "Reading Score",ylab = "Writing Score",pch=20,col="blue")
+d<-density(first$`math score`)
+d
+plot(d,main="Math Score")
+polygon(d,col="red",border="black")
+m<-density(first$`reading score`)
+m
+plot(m,main = "Reading Score")
+polygon(m,col="blue",border="black")
+w<-density(first$`writing score`)
+w
+plot(w,main = "Writing Score")
+polygon(w,col="yellow",border="black")
+boxplot(first$`math score`,main = "Writing Score",xlab="Score in Math",ylab="Maths",col="orange",border="brown",horizontal = TRUE,notch = TRUE)
+boxplot(first$`reading score`,main = "Reading Score",xlab="Score in Reading",ylab="Reading",col="red",border="brown",horizontal = TRUE,notch = TRUE)
+boxplot(first$`writing score`,main = "Writing Score",xlab="Score in Writing",ylab="Writing",col="blue",border="brown",horizontal = TRUE,notch = TRUE)
+read<-first$`reading score`
+write<-first$`writing score`
+read_norm<-rnorm(200,mean=mean(read),sd=sd(read))
+write_norm<-rnorm(200,mean=mean(write),sd=sd(write))
+boxplot(read,read_norm,write,write_norm,main="Multiple Boxplots for Comparison",names = c("Read","Normal","Write","Normal"),las=2,col = c("orange","red"),border = "brown",horizontal = TRUE,notch = TRUE)
+summary(first)
+plot(`reading score`,`writing score`,main = "Reading score vs Writing Score",xlab = "Reading Score",ylab = "Writing Score",pch=20)
+cor(`reading score`,`writing score`,method = "pearson")
+model<-lm(`writing score`~`reading score`)
+model
+summary.lm(model)
+abline(model,col='red')
+t.test(`reading score`,`writing score`)
+t.test(`reading score`,`math score`)
+t.test(`writing score`,`math score`)
+plot(`reading score`,`math score`,main = "Reading score vs Math Score",xlab = "Reading Score",ylab = "Math Score",pch=20)
+cor(`reading score`,`math score`,method = "pearson")
+model1<-lm(`reading score`~`math score`)
+model1
+summary.lm(model1)
+abline(model1,col='red')
+var.test(`reading score`,`math score`)
+var.test(`reading score`,`writing score`)
+var.test(`writing score`,`math score`)
+counts<-table(first$gender)
+barplot(counts,xlab="Gender")
+counts1<-table(first$`race/ethnicity`)
+barplot(counts1,xlab="Race/ethnicity")
+counts2<-table(first$`parental level of education`)
+barplot(counts2,xlab = "Parental level of education")
+counts3<-table(first$`math score`)
+barplot(counts3,xlab = "Math Score")
+counts4<-table(first$`reading score`)
+barplot(counts4,xlab = "Reading Score")
+counts5<-table(first$`writing score`)
+barplot(counts5,xlab="Writing Score")
+```
+\section{Result}
+The excel sheet on the Student perfomances was imported into RStudio.
+Multiple graphs such as scatter plots were plotted among the reading, writing & Math scores. 
+A kernel density plot was plotted with each of the students scoes such as their reading scores, math scores and their writing scores. 
+The density result shows the minimum value, 1st Quartile deviation, meadian, mean, 3rd quartile deviation and maximum value. 
+Different boxplots have been created with the different scores such as the students perfomance of their reading score, writing score and math score. 
+Another boxplot has been created to compare the scores together.
+The summary has been shown with the length of each column, the datatype, and regarding the scores - it shows the minimum value, 1st Quartile deviation, meadian, mean, 3rd quartile deviation and maximum value. 
+Using Pearson's method of correlation, the correlation between the reading score and the writing score is 0.9545981.
+A linear model has been fitted to the graph and the multiple R Squared value is 0.9113 which means that the linear model is a good fit to the data. 
+t-tests such as Welch Two Sample t-test have been used to test the difference in means of the reading score and writing score. 
+At 95% confidence interval - the Alternative hypothesis states that the true difference in means is not equal to 0. Since the p-value of the t-test between the reading score and math score is greater than 0.05 which is the alpha value - we accept the null hypothesis and reject the alternative hypothesis which means that there is no significant difference between the means of the reading score and the math score. 
+Another Welch Two Sample t-test has been implemented between the writing score and the math score. The p-value which is 0.003837 is less than the alpha value which is 0.05 at 95% confidence interval telling us that there is a significant difference between the mean of the writing score and the mean of the math score which implies that we reject the mull hypothesis and accept the alternative hypothesis. 
+The F-test has been used to compare the 2 variances between reading score and math score. The p - value which is 0.232 is greater than the alpha value which is 0.05 at 95% confidence level which means that we accept the null hypothesis and reject the alternative hypothesis which implies that the true ratio of variances is equal to 1. 
+The F-test has been used to compare the 2 variances between writing score and math score. The p - value which is 0.9459 is greater than the alpha value which is 0.05 at 95% confidence level which means that we accept the null hypothesis and reject the alternative hypothesis which implies that the true ratio of variances is equal to 1. 
+The F-test has been used to compare the 2 variances between reading score and writing score. The p - value which is 0.2066 is greater than the alpha value which is 0.05 at 95% confidence level which means that we accept the null hypothesis and reject the alternative hypothesis which implies that the true ratio of variances is equal to 1. 
+A few barplots have been created on the perfomance of the students. 
