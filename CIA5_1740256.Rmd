@@ -1,0 +1,49 @@
+---
+title: "Summarising the Iris dataset using stratification"
+author: "Jeevan"
+date: "7 March 2019"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+attach(iris)
+names(iris)
+View(iris)
+iris %>%
+  filter(Species == 'versicolor') %>%
+  summarise(mean(Petal.Length,na.rm = TRUE))
+iris %>%
+  filter(Species == 'versicolor') %>%
+  summarise(mean(Sepal.Length,na.rm = TRUE))
+iris %>%
+  filter(Petal.Width>1) %>%
+  group_by(Species) %>%
+  summarise(mean(Sepal.Width,na.rm = TRUE))
+strata1 = filter(iris,Species == 'setosa')
+strata2 = filter(iris,Species == 'versicolor')
+strata3 = filter(iris,Species == 'virginica')
+s1 = round(nrow(strata1)/nrow(iris)*49)
+s2 = round(nrow(strata2)/nrow(iris)*50)
+s3 = round(nrow(strata3)/nrow(iris)*50)
+s1+s2+s3
+cor.test(strata1$Petal.Length,strata1$Sepal.Length)
+cor.test(strata2$Petal.Length,strata2$Sepal.Length)
+cor.test(strata3$Petal.Length,strata3$Sepal.Length)
+```
+
+CONCLUSION
+From the above code, we see that the dplyr package has been attached to perform the method of stratification. 
+Using the names function - we see the different columns that are there in the dataset. 
+The view function allows to see the full dataset. 
+We find that the mean petal length and sepal length for the species veriscolor is 4.26 and 5.936 respectively. 
+The mean sepal width whose petal width is more than 1 for each species is displayed separately. The setosa species does not have sepal width greater than 1 and hence it does not display in the table with versicolor and virginica. 
+The dataset has been startified on the basis of species i.e. into 3 species which are setosa, versicolor & virginica.
+Samples have been taken using the nrow command for each species and the total number of samples have been added to 50.
+Using Pearson's product-correlation coefficient, the correlation between Petal Length & Sepal length for the species setosa = 0.267158. 
+The correlation for the species versicolor = 0.754049
+The correlation for the species virginica = 0.8642247

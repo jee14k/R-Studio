@@ -1,0 +1,49 @@
+---
+title: "Stratification in R"
+author: "Jeevan"
+date: "21 February 2019"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readxl)
+Stra_Data <- read_excel("C:/Users/Jeevan/Desktop/Christ University/Statistics/Stra_Data.xlsx")
+View(Stra_Data)
+library(dplyr)
+male <- Stra_Data %>% select(Age,Sex,`Pain score at first intervention`,`Time from End of surgery (mins)`) %>% filter(Sex=='M')
+female <- Stra_Data %>% select(Age,Sex,`Pain score at first intervention`,`Time from End of surgery (mins)`) %>% filter(Sex=='F')
+strata1 <- Stra_Data %>% select(Age,Sex,`Pain score at first intervention`,`Time from End of surgery (mins)`) %>% filter(Age>=16 & Age<=25)
+strata1
+strata1 = filter(Stra_Data,Age>=16, Age<=30)
+strata2 = filter(Stra_Data,Age>=31, Age<=40)
+strata3 = filter(Stra_Data,Age>=41, Age<=60)
+S1_size = round(nrow(strata1)/(nrow(Stra_Data))*60)
+S2_size = round(nrow(strata2)/(nrow(Stra_Data))*60)
+S3_size = round(nrow(strata3)/(nrow(Stra_Data))*60)
+stmp1 = sample_n(strata1, S1_size)
+stmp2 = sample_n(strata2, S2_size)
+stmp3 = sample_n(strata3, S3_size)
+```
+The Stra_Data dataset has been imported into RStudio & the data has been split into male & female. 
+The 1st stratum was created from the dataset which includes both male & female of the age group 16 to 25 years. 
+```{r}
+strata2 <- Stra_Data %>% select(Age,Sex,`Pain score at first intervention`,`Time from End of surgery (mins)`) %>% filter(Age>=26 & Age<=40)
+strata2
+```
+The 2nd stratum was created from the dataset which includes both male & female of the age group 26 to 40 years. 
+```{r}
+strata3 <- Stra_Data %>% select(Age,Sex,`Pain score at first intervention`,`Time from End of surgery (mins)`) %>% filter(Age>=41 & Age<=60)
+strata3
+```
+The 3rd stratum was created from the dataset which includes both male & female of the age group 41 to 60 years.
+
+CONCLUSION
+The dataset was divided into 3 different stratums; Stratum1(16 to 25), Stratum2(26 to 40), Stratum3(41 to 60). 
+The stratums were grouped based on the age of the population. 
+(i)Stratum1 consists of 52 datapoints i.e there are 52 people between the ages 16 & 25.
+(ii)Stratum1 consists of 71 datapoints i.e there are 71 people between the ages 26 & 40.
+(iii)Stratum1 consists of 27 datapoints i.e there are 27 people between the ages 41 & 60.

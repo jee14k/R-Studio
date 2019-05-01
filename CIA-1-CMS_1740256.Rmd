@@ -1,0 +1,42 @@
+---
+title: "Sample Mean Of Horspower & Miles/Gallon on Mtcars Dataset"
+author: "Jeevan-1740256"
+date: "13 December 2018"
+output:
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\section{Aim}
+mtcars data frame involves data on a 32 automobiles. Randomly select 30% of these automobiles and hence
+i) calculate its average Miles/gallon and horsepower.
+ii) Do this three times and note that they are unlikely to be the same automobiles.
+iii) Display the identical result 3 times.
+```{r}
+data<-sample(1:nrow(mtcars),10)
+data
+newcars<-mtcars[data,]
+newcars
+mean(mtcars$hp)
+mean(mtcars$mpg)
+index<-sample(1:nrow(mtcars),10)
+index
+oldcars<-mtcars[index,]
+oldcars
+mean(mtcars$hp)
+mean(mtcars$mpg)
+flag<-sample(1:nrow(mtcars),10)
+flag
+medcars<-mtcars[flag,]
+medcars
+mean(mtcars$hp)
+mean(mtcars$mpg)
+```
+\section{Result}
+The Average Miles/gallon on the mtcars dataset is: 20.09062
+The Average horspower on the mtcars dataset is: 146.6875
+The Automobiles are different all the 3 times we excecute the code although the mean remains identical all 3 times. 

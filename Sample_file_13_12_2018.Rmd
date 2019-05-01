@@ -1,0 +1,27 @@
+---
+title: "Untitled"
+author: "Jeevan-1740256"
+date: "13 December 2018"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\section{Aim}
+This is a sample program
+```{r}
+sample(1:6,10,replace = TRUE)
+set.seed(1)
+set.seed(2)
+set.seed(123)
+index<-sample(1:nrow(iris),5)
+index
+iris[index,]
+mean(iris$Sepal.Length)
+```
+\section{Result}
+This is a sample document
